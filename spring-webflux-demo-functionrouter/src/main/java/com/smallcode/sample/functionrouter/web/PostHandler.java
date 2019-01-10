@@ -1,6 +1,7 @@
 package com.smallcode.sample.functionrouter.web;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.http.MediaType.APPLICATION_STREAM_JSON;
 import static org.springframework.web.reactive.function.BodyInserters.fromPublisher;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
@@ -33,14 +34,18 @@ public class PostHandler {
             .body(BodyInserters.fromObject("hello world!" + name)));
   }
 
+  /**
+   * 客户端每行依次输出
+   */
   public Mono<ServerResponse> list(ServerRequest request) {
     List<Post> posts = new ArrayList<>();
     posts.add(Post.builder().id("1").name("sss").build());
     posts.add(Post.builder().id("2").name("sss2").build());
     posts.add(Post.builder().id("3").name("sss3").build());
     posts.add(Post.builder().id("4").name("sss4").build());
-    Flux<Post> postFlux = Flux.fromIterable(posts).delaySequence(Duration.ofSeconds(1));//.delayElements(Duration.ofSeconds(1));
-    return ok().contentType(APPLICATION_JSON)
+    Flux<Post> postFlux = Flux.fromIterable(posts)
+        .delayElements(Duration.ofSeconds(1));//.delayElements(Duration.ofSeconds(1));
+    return ok().contentType(APPLICATION_STREAM_JSON)
         .body(fromPublisher(postFlux, Post.class));
   }
 }

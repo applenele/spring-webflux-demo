@@ -8,6 +8,7 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_STREAM_JSON;
+import static org.springframework.http.MediaType.APPLICATION_STREAM_JSON_VALUE;
 import static org.springframework.http.MediaType.TEXT_PLAIN;
 import static org.springframework.web.reactive.function.server.RequestPredicates.*;
 
@@ -23,8 +24,8 @@ public class PostRouter {
 
   @Bean
   public RouterFunction<ServerResponse> route(PostHandler postHandler) {
-    return RouterFunctions.route(GET("/post/list"), postHandler::list)
-        .andRoute(POST("/post/create").and(accept(APPLICATION_JSON)),postHandler::echoName);
+    return RouterFunctions.route(GET("/post/list").and(accept(APPLICATION_STREAM_JSON)), postHandler::list)
+        .andRoute(POST("/post/create").and(accept(TEXT_PLAIN)),postHandler::echoName);
   }
 
 }
