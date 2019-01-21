@@ -18,6 +18,7 @@ public class SpringWebfluxDemoFunctionrouterApplication {
 
   public static void main(String[] args) {
     SpringApplication.run(SpringWebfluxDemoFunctionrouterApplication.class, args);
+
   }
 
 
